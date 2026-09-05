@@ -7,6 +7,7 @@ import {
   useMotionValue,
   useReducedMotion,
   useTransform,
+  type MotionValue,
 } from "framer-motion";
 import { useEffect, useId, useRef, useState } from "react";
 import { stackItems } from "@/data/stack";
@@ -63,15 +64,24 @@ export function MarqueeStack() {
   // Drag state.
   const [isDragging, setIsDragging] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  // dragDelta holds the user's drag offset on top of the auto-scroll.
-  const dragDeltaRef = useRef(0);
-  const dragStartXRef = useRef(0);
+  // The user's transient drag offset. We keep this as a MotionValue
+  // (not a React ref) so that `useTransform` reactively recomputes
+  // the composed x when it changes. A plain `useRef` would not
+  // trigger re-computation - that was the previous "blink" bug
+  // where the drag offset was applied once and then ignored.
+  const dragDelta = useMotionValue(0);
+  // The drag offset captured at the moment drag started, used to
+  // compose with the live Motion drag offset.
+  const dragStartX = useMotionValue(0);
 
   // The final transform is the auto-scroll x + the drag offset.
   // useTransform returns a MotionValue that reactively tracks the
-  // sum. We subscribe via the transform so the DOM only writes
-  // one transform per frame.
-  const composedX = useTransform(x, (v) => v + dragDeltaRef.current);
+  // sum, so the DOM only writes one transform per frame and every
+  // change to either input is reflected.
+  const composedX = useTransform(
+    [x, dragDelta] as [MotionValue<number>, MotionValue<number>],
+    ([xv, dv]) => xv + dv
+  );
 
   // Measure loop width after mount. The list is duplicated 2x, so
   // total / 2 is one loop distance. We re-measure on resize too.
@@ -112,18 +122,28 @@ export function MarqueeStack() {
 
   const handleDragStart = () => {
     setIsDragging(true);
-    dragStartXRef.current = dragDeltaRef.current;
+    // Snapshot the current drag delta at drag start. Motion's
+    // `onDrag` event passes `info.offset.x` as the cumulative
+    // displacement since the gesture began, so we add our
+    // current transient offset to it to compute the new total.
+    dragStartX.set(dragDelta.get());
   };
   const handleDrag = (_e: unknown, info: { offset: { x: number } }) => {
     // info.offset.x is the cumulative drag since drag start.
-    dragDeltaRef.current = dragStartXRef.current + info.offset.x;
+    // Total transient offset = start snapshot + live delta.
+    dragDelta.set(dragStartX.get() + info.offset.x);
   };
   const handleDragEnd = () => {
     setIsDragging(false);
-    // Reset the drag offset in a single frame. The auto-scroll x
-    // value has been ticking the whole time, so the track is still
-    // moving smoothly from the same point. No jump, no spring-back.
-    dragDeltaRef.current = 0;
+    // Critical: absorb the drag delta into the base x so the
+    // auto-scroll continues smoothly from the user's release point.
+    // x.set(x.get() + dragDelta.get()) shifts the loop origin by
+    // the drag distance. Then dragDelta = 0 means the composed
+    // x is unchanged for that frame, so there is NO visible jump
+    // - the next frame the auto-scroll just keeps moving at its
+    // normal speed from the new origin.
+    x.set(x.get() + dragDelta.get());
+    dragDelta.set(0);
   };
 
   return (
