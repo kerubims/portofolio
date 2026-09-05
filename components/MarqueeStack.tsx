@@ -47,30 +47,28 @@ import { stackItems } from "@/data/stack";
  *    The drag still works for reduced-motion users (manual exploration).
  */
 const SPEED_PX_PER_SECOND = 60; // gentle drift base speed
-const MOMENTUM_FRICTION = 0.94; // velocity multiplier per frame (60fps)
-                                // 0.94^60 = 0.024 after 1s, ~2% of initial velocity
-const MOMENTUM_MIN_PX_PER_SEC = 8; // below this, snap back to base speed
-const MOMENTUM_TRANSITION = 0.15; // how fast base speed blends in once below threshold
 
 export function MarqueeStack() {
   const uid = useId();
   const reduce = useReducedMotion();
 
   // The x offset of the track, in pixels. Negative = scrolled left.
+  // This is now the SINGLE source of truth for position: it
+  // receives both the auto-scroll increment (each frame) AND
+  // Motion's drag+momentum spring output. They compose cleanly
+  // because Motion uses the same `x` MotionValue.
   const x = useMotionValue(0);
-
-  // Inertia velocity, in px per second. Zero by default. On drag
-  // release we set it from info.velocity.x; the animation frame
-  // applies it and decays it by friction until it falls below
-  // MOMENTUM_MIN_PX_PER_SEC, then it returns control to the base
-  // auto-scroll speed.
-  const velocity = useMotionValue(0);
 
   // Live loop width in pixels. We measure the track after mount so
   // we know how far one full loop travels.
   const trackRef = useRef<HTMLUListElement | null>(null);
   const loopWidthRef = useRef<number>(0);
   const lastTimeRef = useRef<number | null>(null);
+  // Low-pass-filtered auto-scroll speed. We exponentially approach
+  // -SPEED_PX_PER_SECOND with a 100ms time constant so the base
+  // drift fades in smoothly after a drag (no sudden "the track
+  // suddenly starts moving at 60px/s again" feel).
+  const currentAutoSpeedRef = useRef(0);
 
   // Drag state.
   const [isDragging, setIsDragging] = useState(false);
@@ -106,16 +104,27 @@ export function MarqueeStack() {
     return () => window.removeEventListener("resize", measure);
   }, []);
 
-  // Drive the auto-scroll and inertia at ~60fps.
+  // Drive the auto-scroll at ~60fps. The auto-scroll value
+  // accumulates into the same `x` MotionValue that Motion's
+  // drag+momentum uses, so they compose without conflict.
   //
-  // On each frame we compute the effective speed:
-  // - If |velocity| > MOMENTUM_MIN_PX_PER_SEC, use velocity
-  //   (decayed by friction)
-  // - Otherwise, blend back toward the base auto-scroll speed
+  // Smoothness strategy:
   //
-  // sign convention: positive velocity = moving right, negative =
-  // moving left. The base auto-scroll is leftward (negative), so
-  // we sign-mix velocity and base so they sum correctly.
+  // 1. We use a low-pass filter on the auto-scroll increment
+  //    to avoid frame-rate dependent jitter. Instead of
+  //    adding `speed * dt` directly (which can be 0 if the
+  //    frame takes too long, or spiky if dt varies), we
+  //    exponentially approach the target speed.
+  //
+  // 2. When Motion's drag is active, the drag value overrides
+  //    the auto-scroll contribution naturally (we skip the
+  //    auto-scroll add on those frames, see below).
+  //
+  // 3. On drag release, Motion's `dragTransition` runs a
+  //    spring-decay that uses the release velocity to compute
+  //    the inertia. This is the smoothest possible result
+  //    because the spring is GPU-composited and frame-rate
+  //    independent.
   useAnimationFrame((time, delta) => {
     if (reduce) return;
     if (lastTimeRef.current == null) {
@@ -124,30 +133,25 @@ export function MarqueeStack() {
     }
     const dt = Math.min(delta, 50); // clamp huge frame gaps (tab switch)
 
-    let currentVelocity = velocity.get();
-
-    // Apply friction every frame (frame-rate independent)
-    // friction per second raised to (dt/1000)
-    const frictionPerSec = Math.pow(MOMENTUM_FRICTION, 60);
-    const frictionThisFrame = Math.pow(frictionPerSec, dt / 1000);
-    currentVelocity *= frictionThisFrame;
-
-    // Determine effective scroll speed (px/sec, negative = leftward)
-    let effectiveSpeed: number;
-    if (Math.abs(currentVelocity) > MOMENTUM_MIN_PX_PER_SEC) {
-      // Inertia is in charge. Use the (decayed) velocity directly.
-      // We expect velocity to be negative for leftward swipe, which
-      // is the natural direction.
-      effectiveSpeed = currentVelocity;
-    } else {
-      // Snap velocity to 0 and hand control back to base auto-scroll.
-      currentVelocity = 0;
-      effectiveSpeed = -SPEED_PX_PER_SECOND;
+    // While dragging, don't accumulate auto-scroll - Motion's
+    // drag is the source of truth and adding to it would fight.
+    if (isDragging) {
+      lastTimeRef.current = time;
+      return;
     }
-    velocity.set(currentVelocity);
 
-    // Apply the effective speed to the base x.
-    const dx = (effectiveSpeed * dt) / 1000;
+    // Smooth auto-scroll with a low-pass filter: target speed
+    // is -SPEED_PX_PER_SECOND, we approach it exponentially
+    // with a time constant of 100ms. This means: if the spring
+    // from drag release just settled at velocity ~0, the auto-
+    // scroll fades in smoothly instead of appearing as a sudden
+    // -60px/s jump.
+    const TIME_CONSTANT_MS = 100;
+    const alpha = 1 - Math.exp(-dt / TIME_CONSTANT_MS);
+    currentAutoSpeedRef.current +=
+      (-SPEED_PX_PER_SECOND - currentAutoSpeedRef.current) * alpha;
+
+    const dx = (currentAutoSpeedRef.current * dt) / 1000;
     const current = x.get();
     const width = loopWidthRef.current;
     if (width > 0) {
@@ -165,9 +169,10 @@ export function MarqueeStack() {
 
   const handleDragStart = () => {
     setIsDragging(true);
-    // Cancel any in-flight inertia when the user grabs the track
-    // again, so the marquee doesn't fight the new drag.
-    velocity.set(0);
+    // While dragging, the auto-scroll speed is not added to x
+    // (see useAnimationFrame guard). Reset our low-pass-filter
+    // state so it picks up from 0 when the drag releases.
+    currentAutoSpeedRef.current = 0;
     // Snapshot the current drag delta at drag start. Motion's
     // `onDrag` event passes `info.offset.x` as the cumulative
     // displacement since the gesture began, so we add our
@@ -179,32 +184,17 @@ export function MarqueeStack() {
     // Total transient offset = start snapshot + live delta.
     dragDelta.set(dragStartX.get() + info.offset.x);
   };
-  const handleDragEnd = (
-    _e: unknown,
-    info: { velocity: { x: number } }
-  ) => {
+  const handleDragEnd = () => {
     setIsDragging(false);
-
-    // 1) Absorb the drag delta into the base x so the auto-scroll
-    //    continues from the user's release point. This was the
-    //    earlier "blink" fix - the loop origin shifts by the drag
-    //    distance in the same frame the delta is removed.
+    // Critical: absorb the drag delta into the base x so the
+    // auto-scroll continues from the user's release point.
+    // x.set(x.get() + dragDelta.get()) shifts the loop origin
+    // by the drag distance. Then dragDelta = 0 means the
+    // composed x is unchanged for that frame, so there is NO
+    // visible jump - the next frame the auto-scroll just
+    // keeps moving at its low-pass-filter speed.
     x.set(x.get() + dragDelta.get());
     dragDelta.set(0);
-
-    // 2) Seed inertia velocity from the release flick. Motion
-    //    reports info.velocity.x in px/ms, multiply by 1000 to
-      //    get px/sec. We cap it so an aggressive throw doesn't
-      //    send the marquee into orbit, and we only apply it if
-      //    it's faster than the base auto-scroll (otherwise the
-      //    base speed would briefly feel like it's slowing down).
-    const releasePxPerSec = info.velocity.x * 1000;
-    const MAX_INERTIA_PX_PER_SEC = 800;
-    const capped = Math.max(
-      -MAX_INERTIA_PX_PER_SEC,
-      Math.min(MAX_INERTIA_PX_PER_SEC, releasePxPerSec)
-    );
-    velocity.set(capped);
   };
 
   return (
@@ -224,8 +214,32 @@ export function MarqueeStack() {
         className="flex w-max items-center gap-12 py-6"
         aria-label="Stack and tools"
         drag="x"
-        dragMomentum={false}
-        dragElastic={0}
+        dragMomentum={true}
+        // Motion's built-in momentum: spring-based inertia on
+        // release. We customize the transition so the spring
+        // gives a long, smooth glide (low stiffness + high
+        // damping = slow oscillation = iOS-like settle).
+        dragTransition={{
+          // Low power = ease-out exponential, the track glides
+          // quickly then settles. Default is 0.8; we keep it.
+          power: 0.8,
+          // Min/max distance the spring can travel. min ensures
+          // even small flicks produce a visible glide. max caps
+          // the total travel so a panic-swipe doesn't fly the
+          // track across the whole row.
+          min: 50,
+          max: 600,
+          // Modify the bounce stiffness. 0 = no bounce (we want
+          // the track to settle at the new position, not snap
+          // back to the original).
+          bounceStiffness: 200,
+          bounceDamping: 20,
+          // RestDelta: when the track is closer than this many
+          // pixels from its rest position, the spring considers
+          // it settled. Tiny value = clean stop.
+          restDelta: 0.5,
+        }}
+        dragElastic={0.1}
         onDragStart={handleDragStart}
         onDrag={handleDrag}
         onDragEnd={handleDragEnd}
