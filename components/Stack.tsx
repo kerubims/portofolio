@@ -1,6 +1,5 @@
-import { StackIcon } from "./StackIcon";
-import { FadeIn, StaggerContainer, StaggerItem } from "./motion/FadeIn";
-import { stackItems } from "@/data/stack";
+import { FadeIn } from "./motion/FadeIn";
+import { MarqueeStack } from "./MarqueeStack";
 
 export function Stack() {
   return (
@@ -15,15 +14,13 @@ export function Stack() {
             Production-tested across 50+ projects. I pick boring technology that ships.
           </p>
         </FadeIn>
-
-        <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {stackItems.map((item) => (
-            <StaggerItem key={item.slug}>
-              <StackIcon item={item} />
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
       </div>
+
+      {/* Full-bleed marquee lives outside the centered container so the
+          right-to-left motion has room to breathe edge-to-edge. */}
+      <FadeIn>
+        <MarqueeStack />
+      </FadeIn>
     </section>
   );
 }
