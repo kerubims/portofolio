@@ -46,7 +46,11 @@ import { stackItems } from "@/data/stack";
  * 4. Accessibility: prefers-reduced-motion stops the auto-scroll.
  *    The drag still works for reduced-motion users (manual exploration).
  */
-const SPEED_PX_PER_SECOND = 60; // gentle drift
+const SPEED_PX_PER_SECOND = 60; // gentle drift base speed
+const MOMENTUM_FRICTION = 0.94; // velocity multiplier per frame (60fps)
+                                // 0.94^60 = 0.024 after 1s, ~2% of initial velocity
+const MOMENTUM_MIN_PX_PER_SEC = 8; // below this, snap back to base speed
+const MOMENTUM_TRANSITION = 0.15; // how fast base speed blends in once below threshold
 
 export function MarqueeStack() {
   const uid = useId();
@@ -54,6 +58,13 @@ export function MarqueeStack() {
 
   // The x offset of the track, in pixels. Negative = scrolled left.
   const x = useMotionValue(0);
+
+  // Inertia velocity, in px per second. Zero by default. On drag
+  // release we set it from info.velocity.x; the animation frame
+  // applies it and decays it by friction until it falls below
+  // MOMENTUM_MIN_PX_PER_SEC, then it returns control to the base
+  // auto-scroll speed.
+  const velocity = useMotionValue(0);
 
   // Live loop width in pixels. We measure the track after mount so
   // we know how far one full loop travels.
@@ -80,7 +91,7 @@ export function MarqueeStack() {
   // change to either input is reflected.
   const composedX = useTransform(
     [x, dragDelta] as [MotionValue<number>, MotionValue<number>],
-    ([xv, dv]) => xv + dv
+    (values) => (values[0] as number) + (values[1] as number)
   );
 
   // Measure loop width after mount. The list is duplicated 2x, so
@@ -95,7 +106,16 @@ export function MarqueeStack() {
     return () => window.removeEventListener("resize", measure);
   }, []);
 
-  // Drive the auto-scroll at ~60fps.
+  // Drive the auto-scroll and inertia at ~60fps.
+  //
+  // On each frame we compute the effective speed:
+  // - If |velocity| > MOMENTUM_MIN_PX_PER_SEC, use velocity
+  //   (decayed by friction)
+  // - Otherwise, blend back toward the base auto-scroll speed
+  //
+  // sign convention: positive velocity = moving right, negative =
+  // moving left. The base auto-scroll is leftward (negative), so
+  // we sign-mix velocity and base so they sum correctly.
   useAnimationFrame((time, delta) => {
     if (reduce) return;
     if (lastTimeRef.current == null) {
@@ -103,25 +123,51 @@ export function MarqueeStack() {
       return;
     }
     const dt = Math.min(delta, 50); // clamp huge frame gaps (tab switch)
-    const dx = SPEED_PX_PER_SECOND * (dt / 1000);
+
+    let currentVelocity = velocity.get();
+
+    // Apply friction every frame (frame-rate independent)
+    // friction per second raised to (dt/1000)
+    const frictionPerSec = Math.pow(MOMENTUM_FRICTION, 60);
+    const frictionThisFrame = Math.pow(frictionPerSec, dt / 1000);
+    currentVelocity *= frictionThisFrame;
+
+    // Determine effective scroll speed (px/sec, negative = leftward)
+    let effectiveSpeed: number;
+    if (Math.abs(currentVelocity) > MOMENTUM_MIN_PX_PER_SEC) {
+      // Inertia is in charge. Use the (decayed) velocity directly.
+      // We expect velocity to be negative for leftward swipe, which
+      // is the natural direction.
+      effectiveSpeed = currentVelocity;
+    } else {
+      // Snap velocity to 0 and hand control back to base auto-scroll.
+      currentVelocity = 0;
+      effectiveSpeed = -SPEED_PX_PER_SECOND;
+    }
+    velocity.set(currentVelocity);
+
+    // Apply the effective speed to the base x.
+    const dx = (effectiveSpeed * dt) / 1000;
     const current = x.get();
     const width = loopWidthRef.current;
     if (width > 0) {
-      // Move left (negative direction). Wrap when we've gone one
-      // full loop so the duplicated list appears infinite.
-      let next = current - dx;
-      if (next <= -width) {
-        next += width;
-      }
+      let next = current + dx;
+      // Wrap-around for infinite loop. Modulo into [-width, 0].
+      // This works for both directions: leftward and rightward swipes.
+      while (next <= -width) next += width;
+      while (next > 0) next -= width;
       x.set(next);
     } else {
-      x.set(current - dx);
+      x.set(current + dx);
     }
     lastTimeRef.current = time;
   });
 
   const handleDragStart = () => {
     setIsDragging(true);
+    // Cancel any in-flight inertia when the user grabs the track
+    // again, so the marquee doesn't fight the new drag.
+    velocity.set(0);
     // Snapshot the current drag delta at drag start. Motion's
     // `onDrag` event passes `info.offset.x` as the cumulative
     // displacement since the gesture began, so we add our
@@ -133,17 +179,32 @@ export function MarqueeStack() {
     // Total transient offset = start snapshot + live delta.
     dragDelta.set(dragStartX.get() + info.offset.x);
   };
-  const handleDragEnd = () => {
+  const handleDragEnd = (
+    _e: unknown,
+    info: { velocity: { x: number } }
+  ) => {
     setIsDragging(false);
-    // Critical: absorb the drag delta into the base x so the
-    // auto-scroll continues smoothly from the user's release point.
-    // x.set(x.get() + dragDelta.get()) shifts the loop origin by
-    // the drag distance. Then dragDelta = 0 means the composed
-    // x is unchanged for that frame, so there is NO visible jump
-    // - the next frame the auto-scroll just keeps moving at its
-    // normal speed from the new origin.
+
+    // 1) Absorb the drag delta into the base x so the auto-scroll
+    //    continues from the user's release point. This was the
+    //    earlier "blink" fix - the loop origin shifts by the drag
+    //    distance in the same frame the delta is removed.
     x.set(x.get() + dragDelta.get());
     dragDelta.set(0);
+
+    // 2) Seed inertia velocity from the release flick. Motion
+    //    reports info.velocity.x in px/ms, multiply by 1000 to
+      //    get px/sec. We cap it so an aggressive throw doesn't
+      //    send the marquee into orbit, and we only apply it if
+      //    it's faster than the base auto-scroll (otherwise the
+      //    base speed would briefly feel like it's slowing down).
+    const releasePxPerSec = info.velocity.x * 1000;
+    const MAX_INERTIA_PX_PER_SEC = 800;
+    const capped = Math.max(
+      -MAX_INERTIA_PX_PER_SEC,
+      Math.min(MAX_INERTIA_PX_PER_SEC, releasePxPerSec)
+    );
+    velocity.set(capped);
   };
 
   return (
