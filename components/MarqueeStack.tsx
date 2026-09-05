@@ -1,8 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useMotionValue, useReducedMotion, type PanInfo, type MotionValue } from "framer-motion";
-import { useEffect, useId, useState } from "react";
+import {
+  motion,
+  useAnimationFrame,
+  useMotionValue,
+  useReducedMotion,
+  useTransform,
+} from "framer-motion";
+import { useEffect, useId, useRef, useState } from "react";
 import { stackItems } from "@/data/stack";
 
 /**
@@ -10,15 +16,26 @@ import { stackItems } from "@/data/stack";
  *
  * Architecture (per design-taste-frontend Section 3.B + 5.E):
  *
- * 1. Auto-scroll: CSS @keyframes translateX(-50%) on a duplicated list.
- *    The duplicate (2x array) lands exactly where the first half ends, so
- *    the loop is seamless.
+ * The previous version mixed CSS @keyframes with Motion drag, and that
+ * fight over `transform` was the cause of the "stuck on mobile" bug.
+ * Two layers writing to the same `transform` property on touch devices
+ * means one of them always wins, the other gets ignored, and the result
+ * feels frozen.
  *
- * 2. Drag-to-pan: Motion's useMotionValue tracks a drag offset. While
- *    the user is dragging, the CSS animation is paused and the track
- *    is moved manually via the motion value. On release, the CSS
- *    animation resumes from the current visual position with NO jump
- *    (we restart the keyframes with a negative delay = -elapsed).
+ * This rewrite drives the entire loop from Motion (single source of
+ * truth for `x`). Auto-scroll is a constant velocity added per frame,
+ * drag offsets the same value, and the label/icon scale is a separate
+ * animation that does not touch `transform` of the track.
+ *
+ * 1. Auto-scroll: `useAnimationFrame` increments a baseX motion value
+ *    by `speed * dt` per frame. When the offset has travelled past
+ *    the loop width, it wraps to 0 (modulo) so the row appears infinite.
+ *
+ * 2. Drag-to-pan: pointer/touch drag adds a transient offset
+ *    (dragDelta). The base auto-scroll continues underneath, so when
+ *    the user releases, the track is still moving at the same speed
+ *    they had when they let go. The transient offset is removed in
+ *    a single frame (no spring-back), so there is no visible jump.
  *
  * 3. Hover affordances:
  *    - icon scales up (1.0 -> 1.20) on hover
@@ -28,38 +45,85 @@ import { stackItems } from "@/data/stack";
  * 4. Accessibility: prefers-reduced-motion stops the auto-scroll.
  *    The drag still works for reduced-motion users (manual exploration).
  */
+const SPEED_PX_PER_SECOND = 60; // gentle drift
+
 export function MarqueeStack() {
   const uid = useId();
-  const trackClass = `marquee-track-${uid.replace(/:/g, "")}`;
   const reduce = useReducedMotion();
 
-  // Drag state. We use a ref-like motion value (no React re-render
-  // per frame) so the drag stays at 60fps.
-  const dragX = useMotionValue(0);
+  // The x offset of the track, in pixels. Negative = scrolled left.
+  const x = useMotionValue(0);
+
+  // Live loop width in pixels. We measure the track after mount so
+  // we know how far one full loop travels.
+  const trackRef = useRef<HTMLUListElement | null>(null);
+  const loopWidthRef = useRef<number>(0);
+  const lastTimeRef = useRef<number | null>(null);
+
+  // Drag state.
   const [isDragging, setIsDragging] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  // CSS class flips both on drag and on any item hover, so the
-  // animation pauses in both cases. The reason: a moving item makes
-  // it nearly impossible to land the cursor and read a label.
-  const isPaused = isDragging || isHovered;
+  // dragDelta holds the user's drag offset on top of the auto-scroll.
+  const dragDeltaRef = useRef(0);
+  const dragStartXRef = useRef(0);
 
-  // We need to know the current CSS animation offset to "resume from here"
-  // smoothly. We track it via a ref-style number updated by requestAnimationFrame.
-  // Simpler approach: keep the animation always running, and only pause it
-  // by setting animationPlayState = "paused". On release, resume + reset
-  // dragX to 0 over a short transition so the track visually settles back
-  // to its animated position without snapping.
+  // The final transform is the auto-scroll x + the drag offset.
+  // useTransform returns a MotionValue that reactively tracks the
+  // sum. We subscribe via the transform so the DOM only writes
+  // one transform per frame.
+  const composedX = useTransform(x, (v) => v + dragDeltaRef.current);
+
+  // Measure loop width after mount. The list is duplicated 2x, so
+  // total / 2 is one loop distance. We re-measure on resize too.
   useEffect(() => {
-    // No-op for now; effect reserved for future RAF tracking.
+    const measure = () => {
+      if (!trackRef.current) return;
+      loopWidthRef.current = trackRef.current.scrollWidth / 2;
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
   }, []);
 
-  const handleDragStart = () => setIsDragging(true);
+  // Drive the auto-scroll at ~60fps.
+  useAnimationFrame((time, delta) => {
+    if (reduce) return;
+    if (lastTimeRef.current == null) {
+      lastTimeRef.current = time;
+      return;
+    }
+    const dt = Math.min(delta, 50); // clamp huge frame gaps (tab switch)
+    const dx = SPEED_PX_PER_SECOND * (dt / 1000);
+    const current = x.get();
+    const width = loopWidthRef.current;
+    if (width > 0) {
+      // Move left (negative direction). Wrap when we've gone one
+      // full loop so the duplicated list appears infinite.
+      let next = current - dx;
+      if (next <= -width) {
+        next += width;
+      }
+      x.set(next);
+    } else {
+      x.set(current - dx);
+    }
+    lastTimeRef.current = time;
+  });
+
+  const handleDragStart = () => {
+    setIsDragging(true);
+    dragStartXRef.current = dragDeltaRef.current;
+  };
+  const handleDrag = (_e: unknown, info: { offset: { x: number } }) => {
+    // info.offset.x is the cumulative drag since drag start.
+    dragDeltaRef.current = dragStartXRef.current + info.offset.x;
+  };
   const handleDragEnd = () => {
     setIsDragging(false);
-    // Spring the dragX offset back to 0. The CSS animation continues
-    // running underneath, so the track glides back to the keyframe-driven
-    // position smoothly.
-    dragX.set(0);
+    // Reset the drag offset in a single frame. The auto-scroll x
+    // value has been ticking the whole time, so the track is still
+    // moving smoothly from the same point. No jump, no spring-back.
+    dragDeltaRef.current = 0;
   };
 
   return (
@@ -71,61 +135,32 @@ export function MarqueeStack() {
         maskImage:
           "linear-gradient(to right, transparent 0, black 8%, black 92%, transparent 100%)",
         cursor: isDragging ? "grabbing" : "grab",
+        touchAction: "pan-y", // allow vertical page scroll, capture horizontal
       }}
     >
-      <style>{`
-        @keyframes ${trackClass} {
-          from { transform: translate3d(0, 0, 0); }
-          to   { transform: translate3d(-50%, 0, 0); }
-        }
-        .${trackClass} {
-          animation: ${trackClass} ${reduce ? "0s" : "30s"} linear infinite;
-          will-change: transform;
-        }
-        .marquee-root.is-paused .${trackClass} {
-          animation-play-state: paused;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .${trackClass} { animation: none !important; }
-        }
-      `}</style>
-
-      <motion.div
-        className={`marquee-root ${isPaused ? "is-paused" : ""}`}
+      <motion.ul
+        ref={trackRef as unknown as React.Ref<HTMLUListElement>}
+        className="flex w-max items-center gap-12 py-6"
+        aria-label="Stack and tools"
         drag="x"
-        dragConstraints={{ left: 0, right: 0 }} // we manage bounds ourselves
-        dragElastic={0.15}
         dragMomentum={false}
+        dragElastic={0}
         onDragStart={handleDragStart}
-        onDragEnd={(_e: unknown, info: PanInfo) => handleDragEndWithMomentum(info, dragX)}
-        style={{ x: dragX }}
-        // While dragging, the CSS animation pauses (handled via class).
-        // On release, dragX springs back to 0 (handled in handleDragEnd).
+        onDrag={handleDrag}
+        onDragEnd={handleDragEnd}
+        style={{ x: composedX, willChange: "transform" }}
       >
-        <ul
-          className={`${trackClass} flex w-max items-center gap-12 py-6`}
-          aria-label="Stack and tools"
-        >
-          {[...stackItems, ...stackItems].map((item, i) => (
-            <MarqueeItem
-              key={`${item.slug}-${i}`}
-              item={item}
-              isDragging={isDragging}
-              onItemHoverChange={setIsHovered}
-            />
-          ))}
-        </ul>
-      </motion.div>
+        {[...stackItems, ...stackItems].map((item, i) => (
+          <MarqueeItem
+            key={`${item.slug}-${i}`}
+            item={item}
+            isDragging={isDragging}
+            onItemHoverChange={setIsHovered}
+          />
+        ))}
+      </motion.ul>
     </div>
   );
-}
-
-// On drag end, spring the dragX back to 0 so the CSS animation can take
-// over again from a clean offset. We use useSpring below for the proper
-// spring animation; here we just snap to 0 (the spring is wired into the
-// style via useSpring in the parent).
-function handleDragEndWithMomentum(_info: PanInfo, dragX: MotionValue<number>) {
-  dragX.set(0);
 }
 
 function MarqueeItem({
@@ -155,6 +190,14 @@ function MarqueeItem({
         onItemHoverChange(true);
       }}
       onBlur={() => {
+        setHovered(false);
+        onItemHoverChange(false);
+      }}
+      onPointerEnter={() => {
+        setHovered(true);
+        onItemHoverChange(true);
+      }}
+      onPointerLeave={() => {
         setHovered(false);
         onItemHoverChange(false);
       }}
