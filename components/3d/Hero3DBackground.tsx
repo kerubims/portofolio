@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useRef, useMemo, useState, useEffect } from "react";
+import { useRef, useMemo } from "react";
 import * as THREE from "three";
 
 function FloatingParticles({ count = 80 }: { count?: number }) {
@@ -75,9 +75,9 @@ function OrbitingOrb() {
   );
 }
 
-function WebGLFallback() {
-  // Pure CSS animated background that mimics 3D particles/orb
-  // Used when WebGL context fails (e.g. headless environments, very old GPUs)
+// Pure CSS animated background that mimics 3D particles/orb
+// Used when WebGL context fails (e.g. headless environments, very old GPUs)
+export function WebGLFallback() {
   return (
     <div className="absolute inset-0 overflow-hidden">
       {/* Animated gradient mesh */}
@@ -89,7 +89,7 @@ function WebGLFallback() {
             radial-gradient(circle at 80% 70%, rgba(124, 58, 237, 0.20) 0%, transparent 50%),
             radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 60%)
           `,
-          animation: "float 8s ease-in-out infinite",
+          animation: "heroGradient 8s ease-in-out infinite",
         }}
       />
       {/* Floating orbs */}
@@ -97,55 +97,28 @@ function WebGLFallback() {
         className="absolute top-1/4 left-1/4 w-72 h-72 rounded-full blur-3xl opacity-30"
         style={{
           background: "radial-gradient(circle, #2563eb 0%, transparent 70%)",
-          animation: "float 6s ease-in-out infinite",
+          animation: "heroFloat 6s ease-in-out infinite",
         }}
       />
       <div
         className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full blur-3xl opacity-25"
         style={{
           background: "radial-gradient(circle, #7c3aed 0%, transparent 70%)",
-          animation: "float 8s ease-in-out infinite reverse",
+          animation: "heroFloat 8s ease-in-out infinite reverse",
         }}
       />
     </div>
   );
 }
 
-export function Hero3DBackground() {
-  // Detect WebGL support before mounting Canvas
-  const [hasWebGL, setHasWebGL] = useState(true);
-
-  useEffect(() => {
-    try {
-      const canvas = document.createElement("canvas");
-      const gl =
-        canvas.getContext("webgl2") ||
-        canvas.getContext("webgl") ||
-        canvas.getContext("experimental-webgl");
-      if (!gl) {
-        setHasWebGL(false);
-      }
-    } catch {
-      setHasWebGL(false);
-    }
-  }, []);
-
-  if (!hasWebGL) {
-    return <WebGLFallback />;
-  }
-
+// R3F Canvas component (named export for dynamic import)
+export function ThreeCanvas() {
   return (
     <Canvas
       camera={{ position: [0, 0, 8], fov: 50 }}
       dpr={[1, 2]}
       style={{ width: "100%", height: "100%" }}
       gl={{ antialias: true, alpha: true, failIfMajorPerformanceCaveat: false }}
-      onCreated={({ gl }) => {
-        // Soft fail: if context lost, swap to CSS fallback
-        gl.domElement.addEventListener("webglcontextlost", () => {
-          setHasWebGL(false);
-        });
-      }}
     >
       <ambientLight intensity={0.4} />
       <directionalLight position={[5, 5, 5]} intensity={0.6} color="#ffffff" />

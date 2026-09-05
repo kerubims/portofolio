@@ -3,11 +3,14 @@
 import { motion, type Variants } from "framer-motion";
 import dynamic from "next/dynamic";
 
-// Lazy-load 3D background (no SSR)
-const Hero3DBackground = dynamic(() => import("./3d/Hero3DBackground").then(m => m.Hero3DBackground), {
-  ssr: false,
-  loading: () => null,
-});
+// WebGL fallback: always rendered (SSR-safe, no dependencies)
+import { WebGLFallback } from "./3d/Hero3DBackground";
+
+// R3F Canvas: lazy-loaded enhancement ONLY when WebGL works
+const ThreeCanvas = dynamic(
+  () => import("./3d/Hero3DBackground").then((m) => m.ThreeCanvas),
+  { ssr: false, loading: () => null }
+);
 
 const container: Variants = {
   hidden: {},
@@ -24,12 +27,13 @@ const item: Variants = {
 export function Hero() {
   return (
     <section className="relative pt-32 pb-20 overflow-hidden">
-      {/* 3D background */}
-      <div className="absolute inset-0 -z-10 pointer-events-none">
-        <Hero3DBackground />
+      {/* 3D background - WebGLFallback guaranteed, R3F enhancement optional */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <WebGLFallback />
+        <ThreeCanvas />
       </div>
 
-      <div className="relative max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         {/* Left: copy */}
         <motion.div
           className="lg:col-span-7"
@@ -37,71 +41,78 @@ export function Hero() {
           initial="hidden"
           animate="visible"
         >
-          <motion.div variants={item} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-container text-on-primary-container text-xs font-medium mb-5">
-            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse-soft" />
+          <motion.div
+            variants={item}
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 text-blue-700 text-xs font-medium mb-6 border border-blue-100"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
             Available for work
           </motion.div>
 
           <motion.h1
             variants={item}
-            className="text-4xl sm:text-4xl lg:text-4xl font-display font-semibold text-foreground leading-[1.1] tracking-tight"
+            className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05] mb-6"
           >
             Full-stack engineer who ships{" "}
-            <span className="text-gradient-primary">production systems.</span>
+            <span className="text-primary">production systems.</span>
           </motion.h1>
 
           <motion.p
             variants={item}
-            className="mt-5 text-lg text-secondary font-body max-w-xl leading-relaxed"
+            className="text-lg text-secondary leading-relaxed max-w-xl mb-8"
           >
             Laravel and Next.js, with AI where it pays off. 50+ projects live, mostly in enterprise and SMB.
           </motion.p>
 
-          <motion.div variants={item} className="flex flex-wrap items-center gap-3 mt-8">
+          <motion.div variants={item} className="flex flex-wrap gap-3">
             <a
               href="#work"
-              className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-on-primary font-medium hover:bg-primary/90 transition-all hover:gap-3"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-medium rounded-full hover:bg-primary/90 transition-colors"
             >
               View Featured Work
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </a>
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-outline-variant/60 bg-surface-container-lowest/50 text-foreground font-medium hover:bg-surface-container hover:border-foreground/20 transition-all"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-outline-variant/60 text-foreground font-medium rounded-full hover:bg-surface-container transition-colors"
             >
               Get in touch
             </a>
           </motion.div>
         </motion.div>
 
-        {/* Right: photo */}
+        {/* Right: portrait card */}
         <motion.div
           className="lg:col-span-5"
-          initial={{ opacity: 0, scale: 0.9, x: 20 }}
-          animate={{ opacity: 1, scale: 1, x: 0 }}
-          transition={{ duration: 1, delay: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
         >
-          <div className="relative aspect-[4/5] max-w-md mx-auto rounded-3xl overflow-hidden shadow-2xl">
+          <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-surface-container shadow-2xl">
+            {/* Hero photo */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/hero-photo.jpg"
-              alt="Ubim portrait"
-              className="w-full h-full object-cover"
+              alt="Portrait of Ubim, full-stack engineer"
+              className="absolute inset-0 w-full h-full object-cover"
             />
-            {/* Subtle gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-background/30 via-transparent to-transparent" />
-          </div>
 
-          {/* Floating accent badge */}
-          <motion.div
-            className="absolute -bottom-3 -left-3 bg-surface-container-lowest border border-outline-variant/60 rounded-2xl px-4 py-3 shadow-lg"
-            animate={{ y: [0, -8, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <div className="text-[10px] uppercase tracking-wider text-secondary font-mono">Live now</div>
-            <div className="text-sm font-semibold text-foreground font-display">uchat · 6 personas</div>
-          </motion.div>
+            {/* Floating activity card */}
+            <motion.div
+              className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-sm rounded-xl px-4 py-3 shadow-lg flex items-center gap-3"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 1.4 }}
+            >
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <div>
+                <div className="text-[10px] uppercase tracking-wider text-secondary font-mono">Live now</div>
+                <div className="text-sm font-medium">uchat - 6 personas</div>
+              </div>
+            </motion.div>
+          </div>
         </motion.div>
       </div>
     </section>
