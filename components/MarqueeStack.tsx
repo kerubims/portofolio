@@ -219,25 +219,31 @@ export function MarqueeStack() {
         // release. We customize the transition so the spring
         // gives a long, smooth glide (low stiffness + high
         // damping = slow oscillation = iOS-like settle).
+        //
+        // Tuning notes:
+        // - max 1800px: a real flick can carry the track almost
+        //   a full loop width before settling. Combined with
+        //   the wrap-around, this feels like the track glides
+        //   for "ages" before slowing down.
+        // - min 200px: even a tiny tap-and-release produces a
+        //   visible glide. Users never see a "did it register?"
+        //   stop.
+        // - bounceStiffness 80 / bounceDamping 18: very soft
+        //   spring. The track barely overshoots and the residual
+        //   oscillation is so small it reads as "still moving
+        //   slowly" rather than a bounce.
+        // - power 0.55: very gentle ease-out. The track loses
+        //   velocity slowly (long tail). Compare to default 0.8
+        //   which is "eager to stop" and 0.3 which is "drifts
+        //   forever".
+        // - restDelta 0.1: clean stop, no perceptible wobble.
         dragTransition={{
-          // Low power = ease-out exponential, the track glides
-          // quickly then settles. Default is 0.8; we keep it.
-          power: 0.8,
-          // Min/max distance the spring can travel. min ensures
-          // even small flicks produce a visible glide. max caps
-          // the total travel so a panic-swipe doesn't fly the
-          // track across the whole row.
-          min: 50,
-          max: 600,
-          // Modify the bounce stiffness. 0 = no bounce (we want
-          // the track to settle at the new position, not snap
-          // back to the original).
-          bounceStiffness: 200,
-          bounceDamping: 20,
-          // RestDelta: when the track is closer than this many
-          // pixels from its rest position, the spring considers
-          // it settled. Tiny value = clean stop.
-          restDelta: 0.5,
+          power: 0.55,
+          min: 200,
+          max: 1800,
+          bounceStiffness: 80,
+          bounceDamping: 18,
+          restDelta: 0.1,
         }}
         dragElastic={0.1}
         onDragStart={handleDragStart}
@@ -298,7 +304,7 @@ function MarqueeItem({
       }}
     >
       <motion.div
-        className="relative w-12 h-12"
+        className="relative w-12 h-12 marquee-icon"
         animate={{
           scale: hovered && !isDragging ? 1.2 : 1,
         }}

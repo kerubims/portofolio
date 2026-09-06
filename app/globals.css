@@ -90,3 +90,24 @@ html { scroll-behavior: smooth; }
     animation: none !important;
   }
 }
+
+/* ============== Marquee Icons: black & white ============== */
+/* The brand-coloured SVGs in /public/icons are rendered through
+ * this filter so the row reads as a calm monochrome band rather
+ * than a rainbow. Light mode -> black. Dark mode -> white.
+ * Hover is allowed to soften toward a slightly lighter shade. */
+.marquee-icon img {
+  filter: grayscale(1) brightness(0);
+  transition: filter 220ms ease-out;
+  opacity: 0.85;
+}
+.marquee-icon:hover img {
+  filter: grayscale(1) brightness(0.7);
+  opacity: 1;
+}
+.dark .marquee-icon img {
+  filter: grayscale(1) brightness(0) invert(1);
+}
+.dark .marquee-icon:hover img {
+  filter: grayscale(1) brightness(0) invert(1) brightness(1.4);
+}
