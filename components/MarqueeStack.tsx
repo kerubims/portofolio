@@ -93,11 +93,29 @@ export function MarqueeStack() {
   );
 
   // Measure loop width after mount. The list is duplicated 2x, so
-  // total / 2 is one loop distance. We re-measure on resize too.
+  // the loop distance equals the sum of the first half's items and
+  // gaps. We do NOT use `scrollWidth / 2` because that includes
+  // trailing space from `w-max` / flex layout, which gives a
+  // loop width that is larger than the visual content. Using that
+  // wrong value makes the wrap-around jump by 24px every cycle -
+  // a noticeable stutter. The accurate measurement is the sum
+  // of the first N items' widths and the N-1 gaps between them.
   useEffect(() => {
     const measure = () => {
       if (!trackRef.current) return;
-      loopWidthRef.current = trackRef.current.scrollWidth / 2;
+      const ul = trackRef.current;
+      const items = ul.querySelectorAll("li");
+      const halfCount = items.length / 2;
+      let width = 0;
+      for (let i = 0; i < halfCount; i++) {
+        width += items[i].getBoundingClientRect().width;
+        if (i < halfCount - 1) {
+          const a = items[i].getBoundingClientRect();
+          const b = items[i + 1].getBoundingClientRect();
+          width += b.left - a.right;
+        }
+      }
+      loopWidthRef.current = width;
     };
     measure();
     window.addEventListener("resize", measure);
@@ -205,7 +223,13 @@ export function MarqueeStack() {
           "linear-gradient(to right, transparent 0, black 8%, black 92%, transparent 100%)",
         maskImage:
           "linear-gradient(to right, transparent 0, black 8%, black 92%, transparent 100%)",
-        cursor: isDragging ? "grabbing" : "grab",
+        // Cursor is set on the track (motion.ul) itself via the `cursor`
+        // prop below, NOT on the wrapper, so the wrapper's default
+        // cursor (the OS arrow) is what users see most of the time.
+        // The track then changes to grab/grabbing only while actually
+        // dragging. This avoids a permanent "grab" cursor that would
+        // mislead users into thinking the section is drag-only and
+        // would suppress the hover affordance on the icons.
         touchAction: "pan-y", // allow vertical page scroll, capture horizontal
       }}
     >
