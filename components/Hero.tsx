@@ -99,19 +99,11 @@ export function Hero() {
               className="absolute inset-0 w-full h-full object-cover"
             />
 
-            {/* Floating activity card */}
-            <motion.div
-              className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-sm rounded-xl px-4 py-3 shadow-lg flex items-center gap-3"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1.4 }}
-            >
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <div>
-                <div className="text-[10px] uppercase tracking-wider text-secondary font-mono">Live now</div>
-                <div className="text-sm font-medium">uchat - 6 personas</div>
-              </div>
-            </motion.div>
+            {/* Bottom-to-top white fade gradient overlay */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-white via-white/50 to-transparent"
+            />
           </div>
         </motion.div>
       </div>
