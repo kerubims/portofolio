@@ -102,7 +102,7 @@ export function Hero() {
             {/* Bottom-to-top white fade gradient overlay */}
             <div
               aria-hidden
-              className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-white via-white/50 to-transparent"
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-background via-background/50 to-transparent"
             />
           </div>
         </motion.div>
