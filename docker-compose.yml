@@ -1,0 +1,12 @@
+services:
+  portfolio-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: portfolio-web
+    restart: always
+    ports:
+      - "9020:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
