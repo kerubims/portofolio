@@ -1,36 +1,111 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Ubim's Developer Portfolio (portofolio-next)
 
-## Getting Started
+Website portofolio interaktif dan modern yang dibangun dengan **Next.js 16 (App Router)**, **React 19**, **Tailwind CSS v4**, **Framer Motion**, dan **Three.js / React Three Fiber**. Halaman ini menampilkan showcase proyek-proyek enterprise, civic tech, ERP, realtime marketplace, dan AI application yang dikembangkan oleh Ubim.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🛠️ Tech Stack & Tech Spec
+
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router, Standalone Build Output)
+- **UI Library & Rendering**: [React 19](https://react.dev/) & [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Animations & 3D**: [Framer Motion](https://www.framer.com/motion/), [Three.js](https://threejs.org/), [@react-three/fiber](https://r3f.docs.pmnd.rs/), & [@react-three/drei](https://drei.docs.pmnd.rs/)
+- **Containerization**: [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/) *(Port `9020`)*
+
+---
+
+## 🌟 Fitur Utama
+
+1. **Hero 3D Background**: Tampilan visual 3D interaktif menggunakan Three.js canvas & Fiber pada bagian Hero.
+2. **Featured Projects Showcase**: Kartu showcase proyek dunia nyata dengan kategori dan *status badge* (*SHIPPED*, *PRODUCTION*, *PILOT*, *LIVE*):
+   - **SIM-KERMA** — *Cross-ministry partnership system* (Laravel 11, WebSocket, MySQL).
+   - **BioLuxe ERP** — *Skincare manufacturing ERP* (Laravel 10, Batch Tracking, QC, Redis).
+   - **SIMades** — *Village information civic tech system* dengan fitur TTD Digital & QR Verify.
+   - **VespaBox** — *Realtime parts marketplace* dengan Laravel Reverb WebSocket.
+   - **Chat AI (uchat)** — *Multi-persona AI chat streaming* (Next.js 16, Novita AI, Gemini).
+   - **SebatasKopi** — *Coffee shop POS system*.
+3. **Interactive Tech Stack Marquee**: Komponen marquee interaktif yang menampilkan daftar keahlian teknis (Laravel, Next.js, Docker, MySQL, Linux, AI/LLM, REST API).
+4. **Live Metrics & Stats**: Ringkasan pencapaian proyek dan aktivitas sistem.
+5. **Contact & Social Interaction**: Form kontak dan tautan jaringan sosial developer.
+6. **Containerized Production Ready**: Siap dijalankan di server staging/produksi menggunakan Docker Compose.
+
+---
+
+## 📂 Struktur Direktori
+
+```text
+portofolio/
+├── app/                  # Next.js App Router (page.tsx, layout.tsx, globals.css)
+├── components/           # Komponen UI modular
+│   ├── 3d/               # Komponen Three.js / React Three Fiber (Hero3DBackground)
+│   ├── motion/           # Wrapper animasi Framer Motion (FadeIn, dsb.)
+│   ├── Contact.tsx       # Section Form Kontak
+│   ├── Hero.tsx          # Section Hero utama
+│   ├── Navbar.tsx        # Top Navigation bar
+│   ├── Projects.tsx      # Section Showcase Proyek
+│   ├── Stack.tsx         # Section Tech Stack Marquee
+│   └── Stats.tsx         # Section Metrik Stats
+├── data/                 # Data statis & tipe TypeScript
+│   ├── projects.ts       # Data daftar proyek & tech tags
+│   └── stack.ts          # Data item keahlian teknis & brand color
+├── public/               # Asset statis & SVG icons
+├── Dockerfile            # Multi-stage Docker build (Standalone mode)
+├── docker-compose.yml    # Konfigurasi container service (Port 9020:3000)
+├── next.config.ts        # Konfigurasi Next.js 16
+└── package.json          # Dependency & script project
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ⚡ Cara Instalasi & Penggunaan
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1. Jalankan di Mode Development (Lokal)
 
-## Learn More
+**Prasyarat**: Node.js v20+ dan `npm` / `pnpm` / `yarn`.
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# 1. Clone repository ini
+git clone https://github.com/kerubims/portofolio.git
+cd portofolio
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# 2. Install dependency
+npm install
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# 3. Jalankan development server
+npm run dev
+```
 
-## Deploy on Vercel
+Buka [http://localhost:3000](http://localhost:3000) di browser kamu.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 2. Jalankan dengan Docker (Rekomendasi Production)
+
+**Prasyarat**: Docker Engine dan Docker Compose telah terinstall.
+
+```bash
+# Build dan jalankan container di background
+docker compose up -d --build
+```
+
+Website portofolio akan berjalan di [http://localhost:9020](http://localhost:9020).
+
+Untuk menghentikan container:
+```bash
+docker compose down
+```
+
+---
+
+## 📝 Commands ringkas
+
+- `npm run dev` — Menjalankan dev server Next.js.
+- `npm run build` — Melakukan kompilasi & build standalone production.
+- `npm run start` — Menjalankan server production Next.js setelah build.
+- `npm run lint` — Memeriksa linter ESLint.
+
+---
+
+## 📄 Lisensi
+
+Proyek ini menggunakan lisensi [MIT License](LICENSE).
