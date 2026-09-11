@@ -19,7 +19,7 @@ Website portofolio interaktif dan modern yang dibangun dengan **Next.js 16 (App 
 1. **Hero 3D Background**: Tampilan visual 3D interaktif menggunakan Three.js canvas & Fiber pada bagian Hero.
 2. **Featured Projects Showcase**: Kartu showcase proyek dunia nyata dengan kategori dan *status badge* (*SHIPPED*, *PRODUCTION*, *PILOT*, *LIVE*):
    - **SIM-KERMA** — *Cross-ministry partnership system* (Laravel 11, WebSocket, MySQL).
-   - **BioLuxe ERP** — *Skincare manufacturing ERP* (Laravel 10, Batch Tracking, QC, Redis).
+   - **Company Profile Poltek Sendawar** — *Official higher-education company profile* (Laravel 12, Blade, Tailwind CSS, live on Hostinger).
    - **SIMades** — *Village information civic tech system* dengan fitur TTD Digital & QR Verify.
    - **VespaBox** — *Realtime parts marketplace* dengan Laravel Reverb WebSocket.
    - **Chat AI (uchat)** — *Multi-persona AI chat streaming* (Next.js 16, Novita AI, Gemini).

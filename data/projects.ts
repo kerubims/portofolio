@@ -23,15 +23,16 @@ export const projects: Project[] = [
     path: "C:\\laragon\\www\\sim-kerma",
   },
   {
-    slug: "bioluxe",
-    title: "BioLuxe ERP",
-    category: "ERP",
-    status: "PRODUCTION",
+    slug: "poltek-sendawar",
+    title: "Company Profile Poltek Sendawar",
+    category: "Company Profile",
+    status: "LIVE",
     statusTone: "green",
     description:
-      "Manufacturing ERP for skincare line. Batch tracking, BOM, QC, sales pipeline. 200+ SKU, 40 active users daily.",
-    techTags: ["Laravel 10", "MySQL", "Redis"],
-    path: "C:\\laragon\\www\\bioluxe",
+      "Official company profile for Politeknik Sendawar. Profile, faculties & accreditation, news & events, academic calendar, facilities, careers. Live on Hostinger since early 2026.",
+    techTags: ["Laravel 12", "Blade", "Tailwind CSS"],
+    path: "https://github.com/kerubims/company-profile-poltek-sendawar",
+    liveUrl: "https://github.com/kerubims/company-profile-poltek-sendawar",
   },
   {
     slug: "simades",
