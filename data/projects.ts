@@ -57,15 +57,16 @@ export const projects: Project[] = [
     path: "C:\\laragon\\www\\vespabox",
   },
   {
-    slug: "uchat",
-    title: "Chat AI (uchat)",
+    slug: "cvku",
+    title: "CVKu",
     category: "AI",
     status: "LIVE",
     statusTone: "purple",
     description:
-      "Multi-persona AI chat with streaming responses. Novita AI, Gemini, and self-hosted models. Sidebar sessions, persona switching, conversation history.",
-    techTags: ["Next.js 16", "Prisma", "AI SDK"],
-    path: "F:\\Project Development\\chat",
+      "AI-powered ATS resume builder. ATS score checker with keyword gap analysis, guided CV editor, CV library CMS, and streaming AI assistant. Multi-model (Novita AI, Gemini).",
+    techTags: ["Next.js", "AI SDK", "Docker"],
+    path: "https://github.com/kerubims/cvku",
+    liveUrl: "https://cvku.ksm.web.id",
   },
   {
     slug: "sebatas-kopi",

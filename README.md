@@ -22,7 +22,7 @@ Website portofolio interaktif dan modern yang dibangun dengan **Next.js 16 (App 
    - **Company Profile Poltek Sendawar** — *Official higher-education company profile* (Laravel 12, Blade, Tailwind CSS, live on Hostinger).
    - **SIMades** — *Village information civic tech system* dengan fitur TTD Digital & QR Verify.
    - **VespaBox** — *Realtime parts marketplace* dengan Laravel Reverb WebSocket.
-   - **Chat AI (uchat)** — *Multi-persona AI chat streaming* (Next.js 16, Novita AI, Gemini).
+   - **CVKu** — *AI-powered ATS resume builder* (Next.js, AI SDK, live at cvku.ksm.web.id).
    - **SebatasKopi** — *Coffee shop POS system*.
 3. **Interactive Tech Stack Marquee**: Komponen marquee interaktif yang menampilkan daftar keahlian teknis (Laravel, Next.js, Docker, MySQL, Linux, AI/LLM, REST API).
 4. **Live Metrics & Stats**: Ringkasan pencapaian proyek dan aktivitas sistem.
