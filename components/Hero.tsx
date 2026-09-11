@@ -90,7 +90,7 @@ export function Hero() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
         >
-          <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-surface-container shadow-2xl">
+          <div className="relative aspect-[4/5] rounded-2xl overflow-hidden">
             {/* Hero photo */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
