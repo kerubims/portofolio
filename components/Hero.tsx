@@ -41,14 +41,6 @@ export function Hero() {
           initial="hidden"
           animate="visible"
         >
-          <motion.div
-            variants={item}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 text-blue-700 text-xs font-medium mb-6 border border-blue-100"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-            Available for work
-          </motion.div>
-
           <motion.h1
             variants={item}
             className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05] mb-6"

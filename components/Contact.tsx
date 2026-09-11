@@ -12,11 +12,6 @@ export function Contact() {
         transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
         className="max-w-3xl mx-auto px-6 text-center"
       >
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-medium border border-emerald-200 mb-5">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse-soft" />
-          Available for new projects
-        </div>
-
         <h2 className="text-3xl sm:text-4xl font-display font-semibold text-foreground leading-tight">
           Let&apos;s ship something{" "}
           <span className="text-gradient-primary">real.</span>
