@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { Project } from "@/data/projects";
+import Link from "next/link";
+import type { PublicProject } from "@/lib/db";
 
 const toneMap = {
   green: "bg-emerald-50 text-emerald-700 border-emerald-200",
@@ -12,7 +13,7 @@ const toneMap = {
 
 const categoryTone = "bg-primary-container text-on-primary-container border-primary/20";
 
-export function ProjectCard({ project, index = 0 }: { project: Project; index?: number }) {
+export function ProjectCard({ project, index = 0 }: { project: PublicProject; index?: number }) {
   return (
     <motion.article
       className="bg-surface-container-lowest border border-outline-variant/60 rounded-2xl p-6 flex flex-col gap-4 transition-shadow hover:shadow-xl"
@@ -24,14 +25,16 @@ export function ProjectCard({ project, index = 0 }: { project: Project; index?: 
         <span className={`text-[10px] font-medium px-2.5 py-1 rounded-full border ${categoryTone}`}>
           {project.category}
         </span>
-        <span className={`text-[10px] font-semibold tracking-wider px-2.5 py-1 rounded-full border ${toneMap[project.statusTone]}`}>
+        <span className={`text-[10px] font-semibold tracking-wider px-2.5 py-1 rounded-full border ${toneMap[project.statusTone] || toneMap.blue}`}>
           {project.status}
         </span>
       </div>
 
-      {/* Title */}
+      {/* Title — clickable to detail page */}
       <h3 className="text-xl font-semibold font-display text-foreground">
-        {project.title}
+        <Link href={`/projects/${project.slug}`} className="hover:underline decoration-2 underline-offset-4">
+          {project.title}
+        </Link>
       </h3>
 
       {/* Description */}
@@ -56,15 +59,15 @@ export function ProjectCard({ project, index = 0 }: { project: Project; index?: 
         <code className="text-[11px] text-secondary font-code truncate max-w-[200px]" title={project.path}>
           {project.path}
         </code>
-        <a
-          href="#"
+        <Link
+          href={`/projects/${project.slug}`}
           className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:gap-2 transition-all"
         >
           View
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3.5 h-3.5">
             <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
           </svg>
-        </a>
+        </Link>
       </div>
     </motion.article>
   );

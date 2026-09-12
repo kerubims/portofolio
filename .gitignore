@@ -49,3 +49,7 @@ capture-*.py
 capture-final-v*.py
 screenshots/
 screenshot/
+
+# CMS runtime data (SQLite + uploaded images)
+/data-cms/
+/uploads/

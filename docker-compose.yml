@@ -10,3 +10,10 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000
+      - DATA_DIR=/app/data-cms
+      - UPLOADS_DIR=/app/uploads
+      - ADMIN_PASSWORD=${ADMI...}
+      - SESSION_SECRET=${SESS...}
+    volumes:
+      - ./data-cms:/app/data-cms
+      - ./uploads:/app/uploads
