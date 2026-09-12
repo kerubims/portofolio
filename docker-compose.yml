@@ -12,8 +12,8 @@ services:
       - PORT=3000
       - DATA_DIR=/app/data-cms
       - UPLOADS_DIR=/app/uploads
-      - ADMIN_PASSWORD=${ADMI...}
-      - SESSION_SECRET=${SESS...}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - SESSION_SECRET=${SESSION_SECRET}
     volumes:
       - ./data-cms:/app/data-cms
       - ./uploads:/app/uploads
