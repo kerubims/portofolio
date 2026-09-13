@@ -51,7 +51,8 @@ export function Navbar() {
             </svg>
           </a>
           <a
-            href="#contact"
+            href={encodeURI("/CV_ATS_KERUBIM SERAFIM MAHANAIM.pdf")}
+            download="CV_ATS_KERUBIM SERAFIM MAHANAIM.pdf"
             className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium bg-foreground text-background rounded-full hover:bg-primary hover:text-on-primary transition-colors"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3 h-3">
