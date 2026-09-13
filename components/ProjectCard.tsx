@@ -54,11 +54,26 @@ export function ProjectCard({ project, index = 0 }: { project: PublicProject; in
         ))}
       </div>
 
-      {/* Footer: path + view */}
+      {/* Footer: live link + view */}
       <div className="flex items-center justify-between pt-3 border-t border-outline-variant/40">
-        <code className="text-[11px] text-secondary font-code truncate max-w-[200px]" title={project.path}>
-          {project.path}
-        </code>
+        {project.liveUrl ? (
+          <a
+            href={project.liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={`Buka situs live: ${project.title}`}
+            className="inline-flex items-center gap-1 text-[11px] font-code text-secondary hover:text-primary truncate max-w-[200px] transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.75} stroke="currentColor" className="w-3.5 h-3.5 shrink-0">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+            </svg>
+            <span className="truncate">{project.liveUrl}</span>
+          </a>
+        ) : (
+          <code className="text-[11px] text-secondary font-code truncate max-w-[200px]" title={project.path}>
+            {project.path}
+          </code>
+        )}
         <Link
           href={`/projects/${project.slug}`}
           className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:gap-2 transition-all"
