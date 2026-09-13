@@ -21,7 +21,7 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ubim.dev — Engineer full-stack pembangun sistem produksi",
+  title: "Kerubim Serafim Mahanaim — Engineer full-stack pembangun sistem produksi",
   description:
     "Saya bikin sistem informasi — kebanyakan pakai Laravel dan Next.js — untuk kantor pemerintah, kampus, dan UMKM. Semuanya saya bangun dan maintain sendiri, dari server sampai fitur.",
 };

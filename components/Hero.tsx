@@ -41,6 +41,12 @@ export function Hero() {
           initial="hidden"
           animate="visible"
         >
+          <motion.div variants={item} className="mb-5">
+            <div className="text-[11px] uppercase tracking-widest text-secondary font-mono mb-2">
+              Kerubim Serafim Mahanaim · Engineer Full-Stack
+            </div>
+          </motion.div>
+
           <motion.h1
             variants={item}
             className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05] mb-6"

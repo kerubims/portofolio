@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 
 const navLinks = [
+  { label: "Tentang", href: "#about" },
   { label: "Proyek", href: "#work" },
   { label: "Stack", href: "#stack" },
   { label: "Kontak", href: "#contact" },
