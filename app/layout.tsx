@@ -23,7 +23,7 @@ const jetbrains = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Ubim.dev — Engineer full-stack pembangun sistem produksi",
   description:
-    "Laravel dan Next.js, dengan AI kalau memang berguna. Sistem pemerintahan, pendidikan, dan UMKM — live dan saya maintain sendiri.",
+    "Saya bikin sistem informasi — kebanyakan pakai Laravel dan Next.js — untuk kantor pemerintah, kampus, dan UMKM. Semuanya saya bangun dan maintain sendiri, dari server sampai fitur.",
 };
 
 export default function RootLayout({

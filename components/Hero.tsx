@@ -53,7 +53,7 @@ export function Hero() {
             variants={item}
             className="text-lg text-secondary leading-relaxed max-w-xl mb-8"
           >
-            Laravel dan Next.js, dengan AI kalau memang berguna. Sistem pemerintahan, pendidikan, dan UMKM — live dan saya maintain sendiri.
+            Saya bikin sistem informasi — kebanyakan pakai Laravel dan Next.js — untuk kantor pemerintah, kampus, dan UMKM. Semuanya saya bangun dan maintain sendiri, dari server sampai fitur.
           </motion.p>
 
           <motion.div variants={item} className="flex flex-wrap gap-3">
