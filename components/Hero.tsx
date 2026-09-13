@@ -45,15 +45,15 @@ export function Hero() {
             variants={item}
             className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05] mb-6"
           >
-            Full-stack engineer who ships{" "}
-            <span className="text-primary">production systems.</span>
+            Engineer full-stack yang membangun{" "}
+            <span className="text-primary">sistem yang jalan di produksi.</span>
           </motion.h1>
 
           <motion.p
             variants={item}
             className="text-lg text-secondary leading-relaxed max-w-xl mb-8"
           >
-            Laravel and Next.js, with AI where it pays off. Government, education, and SME systems — live and maintained.
+            Laravel dan Next.js, dengan AI kalau memang berguna. Sistem pemerintahan, pendidikan, dan UMKM — live dan saya maintain sendiri.
           </motion.p>
 
           <motion.div variants={item} className="flex flex-wrap gap-3">
@@ -61,7 +61,7 @@ export function Hero() {
               href="#work"
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-medium rounded-full hover:bg-primary/90 transition-colors"
             >
-              View Featured Work
+              Lihat Proyek
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
@@ -70,7 +70,7 @@ export function Hero() {
               href="#contact"
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-outline-variant/60 text-foreground font-medium rounded-full hover:bg-surface-container transition-colors"
             >
-              Get in touch
+              Hubungi Saya
             </a>
           </motion.div>
         </motion.div>
@@ -87,7 +87,7 @@ export function Hero() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/hero-photo.jpg"
-              alt="Portrait of Ubim, full-stack engineer"
+              alt="Foto Ubim, engineer full-stack"
               className="absolute inset-0 w-full h-full object-cover"
             />
 

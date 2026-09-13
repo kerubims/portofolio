@@ -36,12 +36,12 @@ export function Contact() {
         className="max-w-3xl mx-auto px-6 text-center"
       >
         <h2 className="text-3xl sm:text-4xl font-display font-semibold text-foreground leading-tight">
-          Let&apos;s ship something{" "}
-          <span className="text-gradient-primary">real.</span>
+          Butuh sistem yang beneran{" "}
+          <span className="text-gradient-primary">jalan?</span>
         </h2>
 
         <p className="mt-4 text-secondary font-body max-w-xl mx-auto leading-relaxed">
-          I work with enterprise teams and SMB owners who need code that runs, not slides.
+          Saya terbiasa mengerjakan sistem pemerintahan, kampus, dan UMKM — dari analisis kebutuhan sampai produksi dan maintenance.
         </p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
@@ -49,16 +49,18 @@ export function Contact() {
             href="mailto:ubimdonk@gmail.com"
             className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-on-primary font-medium hover:gap-3 transition-all"
           >
-            Send Email
+            Kirim Email
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
               <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
             </svg>
           </a>
           <a
-            href="#"
+            href="https://wa.me/62882009074648"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-outline-variant/60 bg-surface-container-lowest/50 text-foreground font-medium hover:bg-surface-container transition-all"
           >
-            Schedule a call
+            Chat via WhatsApp
           </a>
         </div>
 

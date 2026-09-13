@@ -21,9 +21,9 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ubim.dev — Full-stack engineer who ships",
+  title: "Ubim.dev — Engineer full-stack pembangun sistem produksi",
   description:
-    "Laravel and Next.js, with AI where it pays off. Government, education, and SME systems — live and maintained.",
+    "Laravel dan Next.js, dengan AI kalau memang berguna. Sistem pemerintahan, pendidikan, dan UMKM — live dan saya maintain sendiri.",
 };
 
 export default function RootLayout({
@@ -33,7 +33,7 @@ export default function RootLayout({
 }) {
   return (
     <html
-      lang="en"
+      lang="id"
       className={`${plusJakarta.variable} ${inter.variable} ${jetbrains.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground font-body">

@@ -18,7 +18,7 @@ export const projects: Project[] = [
     status: "SHIPPED",
     statusTone: "green",
     description:
-      "Cross-ministry partnership system. Approval chains, document versioning, multi-party e-signature, audit trail.",
+      "Sistem informasi manajemen kerjasama lintas kementerian: rantai persetujuan, versioning dokumen, e-signature multi-pihak, audit trail.",
     techTags: ["Laravel 11", "MySQL", "WebSocket"],
     path: "C:\\laragon\\www\\sim-kerma",
   },
@@ -29,7 +29,7 @@ export const projects: Project[] = [
     status: "LIVE",
     statusTone: "green",
     description:
-      "Official company profile for Politeknik Sendawar. Profile, faculties & accreditation, news & events, academic calendar, facilities, careers. Live on Hostinger since early 2026.",
+      "Company profile resmi Politeknik Sendawar: profil, jurusan & akreditasi, berita & acara, kalender akademik, fasilitas, dan lowongan. Live di Hostinger sejak awal 2026.",
     techTags: ["Laravel 12", "Blade", "Tailwind CSS"],
     path: "https://github.com/kerubims/company-profile-poltek-sendawar",
     liveUrl: "https://github.com/kerubims/company-profile-poltek-sendawar",
@@ -41,7 +41,7 @@ export const projects: Project[] = [
     status: "PILOT",
     statusTone: "amber",
     description:
-      "Village information system. Citizen services, ID cards, budget transparency, digital letter signing with QR verify.",
+      "Sistem informasi desa: pelayanan warga, data kependudukan, transparansi anggaran, dan tanda tangan surat digital dengan verifikasi QR.",
     techTags: ["Laravel", "GSheets API", "WA Gateway"],
     path: "C:\\laragon\\www\\simades",
   },
@@ -52,7 +52,7 @@ export const projects: Project[] = [
     status: "BETA",
     statusTone: "amber",
     description:
-      "Vespa parts marketplace with realtime bidding. Laravel Reverb WebSocket, channel broadcasting, 2k+ concurrent users tested.",
+      "Marketplace spare part Vespa dengan bidding realtime. Laravel Reverb WebSocket, broadcasting channel; diuji untuk ribuan pengguna bersamaan.",
     techTags: ["Laravel 11", "Reverb", "WebSocket"],
     path: "C:\\laragon\\www\\vespabox",
   },
@@ -63,7 +63,7 @@ export const projects: Project[] = [
     status: "LIVE",
     statusTone: "purple",
     description:
-      "AI-powered ATS resume builder. ATS score checker with keyword gap analysis, guided CV editor, CV library CMS, and streaming AI assistant. Multi-model (Novita AI, Gemini).",
+      "Pembuat CV berbasis AI: pemeriksa skor ATS dengan analisis gap kata kunci, editor CV terpandu, pustaka CV, dan asisten AI streaming. Multi-model (Novita AI, Gemini).",
     techTags: ["Next.js", "AI SDK", "Docker"],
     path: "https://github.com/kerubims/cvku",
     liveUrl: "https://cvku.ksm.web.id",
@@ -75,7 +75,7 @@ export const projects: Project[] = [
     status: "DEPLOYED",
     statusTone: "green",
     description:
-      "Coffee shop POS. Menu, order tracking, daily reports, member program, stock alerts. Built for actual counter speed at the cafe.",
+      "POS kedai kopi: menu, pelacakan pesanan, laporan harian, program member, dan alert stok. Dibangun untuk kecepatan layanan di kasir.",
     techTags: ["Laravel 11", "Alpine.js", "MySQL"],
     path: "C:\\laragon\\www\\sebatas-kopi",
   },

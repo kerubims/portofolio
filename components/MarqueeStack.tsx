@@ -236,7 +236,7 @@ export function MarqueeStack() {
       <motion.ul
         ref={trackRef as unknown as React.Ref<HTMLUListElement>}
         className="flex w-max items-center gap-12 py-6"
-        aria-label="Stack and tools"
+        aria-label="Stack dan tools"
         drag="x"
         dragMomentum={true}
         // Motion's built-in momentum: spring-based inertia on

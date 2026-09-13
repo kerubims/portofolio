@@ -11,7 +11,7 @@ export function Stack() {
             Stack &amp; Tools
           </h2>
           <p className="mt-3 text-secondary font-body max-w-2xl">
-            Production-tested across government, campus, and retail systems. I pick boring technology that ships.
+            Dipakai sehari-hari di sistem pemerintahan, kampus, dan ritel. Saya pilih teknologi yang membosankan tapi terbukti jalan.
           </p>
         </FadeIn>
       </div>
