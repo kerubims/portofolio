@@ -47,24 +47,23 @@ export function Contact() {
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <a
             href="mailto:ubimdonk@gmail.com"
-            className="group relative inline-flex items-center overflow-hidden rounded-full bg-primary px-6 py-3 font-medium text-white shadow-sm transition active:scale-[0.99]"
+            className="btn-sweep group inline-flex items-center rounded-full bg-primary px-6 py-3 font-medium text-white shadow-sm transition-colors hover:text-primary active:scale-[0.99]"
+            style={{ "--sweep": "#ffffff", "--shine": "rgba(37, 99, 235, 0.35)" } as React.CSSProperties}
           >
-            <span className="relative z-10 inline-flex items-center gap-2 transition-all group-hover:gap-3">
+            <span className="inline-flex items-center gap-2 transition-all group-hover:gap-3">
               Kirim Email
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 transition-transform group-hover:scale-110">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
               </svg>
             </span>
-            <span aria-hidden className="absolute inset-0 -translate-x-full bg-gradient-to-r from-primary/70 via-primary/40 to-primary/70 transition-transform duration-500 group-hover:translate-x-0" />
           </a>
           <a
             href="https://wa.me/62882009074648"
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative inline-flex items-center overflow-hidden rounded-full border border-outline-variant/60 bg-surface-container-lowest px-6 py-3 font-medium text-foreground shadow-sm transition active:scale-[0.99]"
+            className="btn-sweep group inline-flex items-center rounded-full border border-outline-variant/60 bg-surface-container-lowest px-6 py-3 font-medium text-foreground shadow-sm transition-colors hover:text-white active:scale-[0.99]"
           >
             <span className="relative z-10">Chat via WhatsApp</span>
-            <span aria-hidden className="absolute inset-0 -translate-x-full bg-gradient-to-r from-surface-container to-surface-container-high transition-transform duration-500 group-hover:translate-x-0" />
           </a>
         </div>
 
