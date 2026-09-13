@@ -23,7 +23,7 @@ const jetbrains = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Ubim.dev — Full-stack engineer who ships",
   description:
-    "Laravel and Next.js, with AI where it pays off. 50+ projects live, mostly in enterprise and SMB.",
+    "Laravel and Next.js, with AI where it pays off. Government, education, and SME systems — live and maintained.",
 };
 
 export default function RootLayout({

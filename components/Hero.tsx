@@ -53,7 +53,7 @@ export function Hero() {
             variants={item}
             className="text-lg text-secondary leading-relaxed max-w-xl mb-8"
           >
-            Laravel and Next.js, with AI where it pays off. 50+ projects live, mostly in enterprise and SMB.
+            Laravel and Next.js, with AI where it pays off. Government, education, and SME systems — live and maintained.
           </motion.p>
 
           <motion.div variants={item} className="flex flex-wrap gap-3">

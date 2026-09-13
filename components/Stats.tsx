@@ -4,10 +4,10 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
 const stats = [
-  { value: "50+", label: "Projects shipped" },
-  { value: "14", label: "Ministries served" },
-  { value: "8y", label: "In production" },
-  { value: "200+", label: "Active SKU tracked" },
+  { value: "6", label: "Systems built & maintained" },
+  { value: "3+", label: "Years of professional experience" },
+  { value: "3", label: "Sectors served: gov, edu, SME" },
+  { value: "100%", label: "Deployed & maintained myself" },
 ];
 
 function Counter({ value, inView }: { value: string; inView: boolean }) {

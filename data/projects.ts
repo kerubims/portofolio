@@ -18,7 +18,7 @@ export const projects: Project[] = [
     status: "SHIPPED",
     statusTone: "green",
     description:
-      "Cross-ministry partnership system. Approval chains, file versioning, audit trail. 14 ministries, 4 provinces.",
+      "Cross-ministry partnership system. Approval chains, document versioning, multi-party e-signature, audit trail.",
     techTags: ["Laravel 11", "MySQL", "WebSocket"],
     path: "C:\\laragon\\www\\sim-kerma",
   },
