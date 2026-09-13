@@ -1,8 +1,8 @@
 export type Project = {
   slug: string;
   title: string;
-  category: string;       // Enterprise / Civic Tech / dll
-  status: string;         // SHIPPED / PILOT / LIVE / dll
+  category: string,       // Enterprise / Civic Tech / dll
+  status: string,         // SHIPPED / PILOT / LIVE / dll
   statusTone: "blue" | "green" | "amber" | "purple";
   description: string;
   techTags: string[];
@@ -52,7 +52,7 @@ export const projects: Project[] = [
     status: "BETA",
     statusTone: "amber",
     description:
-      "Marketplace spare part Vespa dengan bidding realtime. Laravel Reverb WebSocket, broadcasting channel; diuji untuk ribuan pengguna bersamaan.",
+      "Marketplace spare part Vespa dengan bidding realtime. Laravel Reverb WebSocket, broadcasting channel, diuji untuk ribuan pengguna bersamaan.",
     techTags: ["Laravel 11", "Reverb", "WebSocket"],
     path: "C:\\laragon\\www\\vespabox",
   },
