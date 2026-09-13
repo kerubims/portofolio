@@ -65,18 +65,22 @@ export function Hero() {
           <motion.div variants={item} className="flex flex-wrap gap-3">
             <a
               href="#work"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-medium rounded-full hover:bg-primary/90 transition-colors"
+              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-primary px-5 py-2.5 font-medium text-white shadow-sm transition hover:bg-primary/90 active:scale-[0.99]"
             >
-              Lihat Proyek Pilihan
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
+              <span className="relative z-10 inline-flex items-center gap-2">
+                Lihat Proyek Pilihan
+                <svg className="w-4 h-4 transition-transform group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </span>
+              <span aria-hidden className="absolute inset-0 -translate-x-full bg-gradient-to-r from-primary/70 via-primary/40 to-primary/70 transition-transform duration-500 group-hover:translate-x-0" />
             </a>
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-outline-variant/60 text-foreground font-medium rounded-full hover:bg-surface-container transition-colors"
+              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-outline-variant/60 bg-white px-5 py-2.5 font-medium text-foreground shadow-sm transition active:scale-[0.99]"
             >
-              Hubungi Saya
+              <span className="relative z-10">Hubungi Saya</span>
+              <span aria-hidden className="absolute inset-0 -translate-x-full bg-gradient-to-r from-surface-container to-surface-container-high transition-transform duration-500 group-hover:translate-x-0" />
             </a>
           </motion.div>
         </motion.div>

@@ -47,31 +47,24 @@ export function Contact() {
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <a
             href="mailto:ubimdonk@gmail.com"
-            className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-on-primary font-medium hover:gap-3 transition-all"
+            className="group relative inline-flex items-center overflow-hidden rounded-full bg-primary px-6 py-3 font-medium text-white shadow-sm transition active:scale-[0.99]"
           >
-            Kirim Email
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-            </svg>
+            <span className="relative z-10 inline-flex items-center gap-2 transition-all group-hover:gap-3">
+              Kirim Email
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 transition-transform group-hover:scale-110">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+              </svg>
+            </span>
+            <span aria-hidden className="absolute inset-0 -translate-x-full bg-gradient-to-r from-primary/70 via-primary/40 to-primary/70 transition-transform duration-500 group-hover:translate-x-0" />
           </a>
           <a
             href="https://wa.me/62882009074648"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-outline-variant/60 bg-surface-container-lowest/50 text-foreground font-medium hover:bg-surface-container transition-all"
+            className="group relative inline-flex items-center overflow-hidden rounded-full border border-outline-variant/60 bg-surface-container-lowest px-6 py-3 font-medium text-foreground shadow-sm transition active:scale-[0.99]"
           >
-            Chat via WhatsApp
-          </a>
-          <a
-            href="https://cvku.ksm.web.id/ats-checker"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-emerald-500/40 bg-emerald-500/10 text-emerald-600 font-medium hover:bg-emerald-500/20 transition-all"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            Cek Skor CV
+            <span className="relative z-10">Chat via WhatsApp</span>
+            <span aria-hidden className="absolute inset-0 -translate-x-full bg-gradient-to-r from-surface-container to-surface-container-high transition-transform duration-500 group-hover:translate-x-0" />
           </a>
         </div>
 
