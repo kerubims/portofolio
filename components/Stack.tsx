@@ -11,7 +11,7 @@ export function Stack() {
             Stack &amp; Tools
           </h2>
           <p className="mt-3 text-secondary font-body max-w-2xl">
-            Dipakai sehari-hari di sistem pemerintahan, kampus, dan ritel. Saya pilih teknologi yang membosankan tapi terbukti jalan.
+            Saya pilih teknologi yang membosankan tapi terbukti jalan — semua di bawah dipakai di project yang masih hidup sampai hari ini.
           </p>
         </FadeIn>
       </div>

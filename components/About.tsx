@@ -87,11 +87,10 @@ export function About() {
         <FadeIn className="mb-10">
           <div className="text-[11px] uppercase tracking-widest text-secondary font-mono mb-2">Tentang Saya</div>
           <h2 className="text-3xl sm:text-4xl font-display font-semibold text-foreground">
-            Kerubim Serafim Mahanaim.
+            Dari lab SMK sampai server produksi.
           </h2>
           <p className="mt-3 text-secondary font-body max-w-2xl">
-            Orang Malang yang dari SMK jurusan Rekayasa Perangkat Lunak lanjut terus sampai S1 Sistem Informasi.
-            Pernah jadi Staff IT di BPS Kota Malang, dan sekarang bangun sistem informasi untuk instansi pemerintah, kampus, dan UMKM.
+            Jurusan RPL sejak SMK, lanjut D3 Teknologi Informasi di Universitas Brawijaya, sekarang S1 Sistem Informasi di STMIK PPKIA. Pernah jadi Staff IT di BPS Kota Malang; sekarang fokus membangun sistem informasi — dari analisis kebutuhan sampai deployed dan jalan di produksi.
           </p>
         </FadeIn>
 

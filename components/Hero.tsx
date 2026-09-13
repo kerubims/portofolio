@@ -51,15 +51,15 @@ export function Hero() {
             variants={item}
             className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05] mb-6"
           >
-            Engineer full-stack yang membangun{" "}
-            <span className="text-primary">sistem yang jalan di produksi.</span>
+            Saya bangun sistem informasi{" "}
+            <span className="text-primary">yang dipakai kerja tiap hari.</span>
           </motion.h1>
 
           <motion.p
             variants={item}
             className="text-lg text-secondary leading-relaxed max-w-xl mb-8"
           >
-            Saya bikin sistem informasi — kebanyakan pakai Laravel dan Next.js — untuk kantor pemerintah, kampus, dan UMKM. Semuanya saya bangun dan maintain sendiri, dari server sampai fitur.
+            Kebanyakan Laravel dan Next.js, untuk kantor pemerintah, kampus, dan UMKM. Semuanya saya kerjakan sendiri dari server sampai fitur — live, dan bisa Anda cek langsung di halaman ini.
           </motion.p>
 
           <motion.div variants={item} className="flex flex-wrap gap-3">
@@ -67,7 +67,7 @@ export function Hero() {
               href="#work"
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-medium rounded-full hover:bg-primary/90 transition-colors"
             >
-              Lihat Proyek
+              Lihat Proyek Pilihan
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>

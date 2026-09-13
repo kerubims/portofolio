@@ -41,7 +41,7 @@ export function Contact() {
         </h2>
 
         <p className="mt-4 text-secondary font-body max-w-xl mx-auto leading-relaxed">
-          Saya terbiasa mengerjakan sistem pemerintahan, kampus, dan UMKM — dari analisis kebutuhan sampai produksi dan maintenance.
+          Punya instansi, kampus, atau usaha yang butuh sistem — tapi bingung mulai dari mana? Ceritakan dulu kebutuhannya, saya bantu petakan solusinya.
         </p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
