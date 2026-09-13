@@ -42,7 +42,7 @@ export function Navbar() {
         {/* Trailing actions */}
         <div className="flex items-center gap-1 pl-2 ml-1 border-l border-outline-variant/40">
           <a
-            href="mailto:ubim@systems.dev"
+            href="mailto:ubimdonk@gmail.com"
             aria-label="Email"
             className="inline-flex items-center justify-center p-1.5 text-secondary hover:text-primary rounded-full hover:bg-primary-container/40 transition-colors"
           >

@@ -46,7 +46,7 @@ export function Contact() {
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <a
-            href="mailto:ubim@systems.dev"
+            href="mailto:ubimdonk@gmail.com"
             className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-on-primary font-medium hover:gap-3 transition-all"
           >
             Send Email
