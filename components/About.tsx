@@ -90,8 +90,8 @@ export function About() {
             Kerubim Serafim Mahanaim.
           </h2>
           <p className="mt-3 text-secondary font-body max-w-2xl">
-            Orang Malang yang dari SMK jurusan Rekayasa Perangkat Lunak lanjut terus sampai S1 Sistem Informasi,
-            sambil dari 2023 kerja beneran bikin sistem untuk instansi pemerintah, kampus, dan UMKM.
+            Orang Malang yang dari SMK jurusan Rekayasa Perangkat Lunak lanjut terus sampai S1 Sistem Informasi.
+            Pernah jadi Staff IT di BPS Kota Malang, dan sekarang bangun sistem informasi untuk instansi pemerintah, kampus, dan UMKM.
           </p>
         </FadeIn>
 
