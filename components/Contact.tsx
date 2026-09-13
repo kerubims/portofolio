@@ -48,7 +48,7 @@ export function Contact() {
           <a
             href="mailto:ubimdonk@gmail.com"
             className="btn-sweep group inline-flex items-center rounded-full bg-primary px-6 py-3 font-medium text-white shadow-sm transition-colors hover:text-primary active:scale-[0.99]"
-            style={{ "--sweep": "#ffffff", "--shine": "rgba(37, 99, 235, 0.35)" } as React.CSSProperties}
+            style={{ "--sweep": "#ffffff", "--shine": "rgba(37, 99, 235, 0.5)" } as React.CSSProperties}
           >
             <span className="inline-flex items-center gap-2 transition-all group-hover:gap-3">
               Kirim Email

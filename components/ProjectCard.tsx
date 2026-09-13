@@ -76,7 +76,7 @@ export function ProjectCard({ project, index = 0 }: { project: PublicProject; in
         )}
         <Link
           href={`/projects/${project.slug}`}
-          className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:gap-2 transition-all"
+          className="btn-sweep inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-sm font-medium text-primary transition-colors hover:text-white active:scale-[0.99]"
         >
           Detail
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3.5 h-3.5">

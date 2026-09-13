@@ -66,7 +66,7 @@ export function Hero() {
             <a
               href="#work"
               className="btn-sweep group inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 font-medium text-white shadow-sm transition-colors hover:text-primary active:scale-[0.99]"
-              style={{ "--sweep": "#ffffff", "--shine": "rgba(37, 99, 235, 0.35)" } as React.CSSProperties}
+              style={{ "--sweep": "#ffffff", "--shine": "rgba(37, 99, 235, 0.5)" } as React.CSSProperties}
             >
               <span className="inline-flex items-center gap-2">
                 Lihat Proyek Pilihan
