@@ -90,7 +90,7 @@ export default function AdminDashboard() {
         <header className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-xl font-semibold text-foreground">Portfolio Admin</h1>
-            <p className="text-sm text-secondary">Kelola project portofolio — tanpa sentuh kode.</p>
+            <p className="text-sm text-secondary">Kelola project portofolio, tanpa sentuh kode.</p>
           </div>
           <div className="flex gap-3 text-sm">
             <Link href="/" className="text-secondary hover:text-foreground">← Site</Link>
@@ -138,7 +138,7 @@ export default function AdminDashboard() {
                 </div>
               </Field>
               <Field label="Role"><input className={inp} value={draft.role} onChange={(e) => setDraft({ ...draft, role: e.target.value })} /></Field>
-              <Field label="Period"><input className={inp} value={draft.period} placeholder="2025 — now" onChange={(e) => setDraft({ ...draft, period: e.target.value })} /></Field>
+              <Field label="Period"><input className={inp} value={draft.period} placeholder="2025 - now" onChange={(e) => setDraft({ ...draft, period: e.target.value })} /></Field>
               <Field label="Live URL"><input className={inp} value={draft.liveUrl} onChange={(e) => setDraft({ ...draft, liveUrl: e.target.value })} /></Field>
               <Field label="Repo / Path"><input className={inp} value={draft.path} onChange={(e) => setDraft({ ...draft, path: e.target.value })} /></Field>
             </div>

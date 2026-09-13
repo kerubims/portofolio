@@ -41,7 +41,7 @@ export function Contact() {
         </h2>
 
         <p className="mt-4 text-secondary font-body max-w-xl mx-auto leading-relaxed">
-          Punya instansi, kampus, atau usaha yang butuh sistem — tapi bingung mulai dari mana? Ceritakan dulu kebutuhannya, saya bantu petakan solusinya.
+          Punya instansi, kampus, atau usaha yang butuh sistem tapi bingung mulai dari mana? Ceritakan dulu kebutuhannya, saya bantu petakan solusinya.
         </p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
@@ -71,7 +71,7 @@ export function Contact() {
               href={s.href}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={s.name + " — Kerubim Serafim Mahanaim"}
+              aria-label={s.name + ", Kerubim Serafim Mahanaim"}
               title={s.name}
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}

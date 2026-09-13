@@ -59,7 +59,7 @@ export function Hero() {
             variants={item}
             className="text-lg text-secondary leading-relaxed max-w-xl mb-8"
           >
-            Kebanyakan Laravel dan Next.js, untuk kantor pemerintah, kampus, dan UMKM. Semuanya saya kerjakan sendiri dari server sampai fitur — live, dan bisa Anda cek langsung di halaman ini.
+            Kebanyakan Laravel dan Next.js, untuk kantor pemerintah, kampus, dan UMKM. Semuanya saya kerjakan sendiri dari server sampai fitur, live dan bisa Anda cek langsung di halaman ini.
           </motion.p>
 
           <motion.div variants={item} className="flex flex-wrap gap-3">

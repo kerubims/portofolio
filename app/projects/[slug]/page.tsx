@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!row) return { title: "Project not found" };
   const p = toPublic(row);
   return {
-    title: `${p.title} — Ubim`,
+    title: `${p.title} - Ubim`,
     description: p.description,
   };
 }

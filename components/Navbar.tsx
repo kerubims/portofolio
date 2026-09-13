@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const navLinks = [
   { label: "Tentang", href: "#about" },
@@ -12,6 +12,31 @@ const navLinks = [
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState<string>("");
+
+  // Scroll-spy: section yang menyentuh pita tengah viewport jadi aktif.
+  useEffect(() => {
+    const ids = navLinks.map((l) => l.href.slice(1));
+    const sections = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        }
+        // di atas semua section (area hero) -> tidak ada yang aktif
+        const first = sections[0].getBoundingClientRect().top;
+        if (first > window.innerHeight / 2) setActive("");
+      },
+      { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
+    );
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <motion.header
       initial={{ y: -40, opacity: 0 }}
@@ -28,16 +53,31 @@ export function Navbar() {
 
         {/* Center links */}
         <ul className="hidden md:flex items-center gap-0.5 ml-2">
-          {navLinks.map((l) => (
-            <li key={l.href}>
-              <a
-                href={l.href}
-                className="px-3 py-1.5 text-sm font-medium text-secondary hover:text-foreground rounded-full hover:bg-surface-container transition-colors"
-              >
-                {l.label}
-              </a>
-            </li>
-          ))}
+          {navLinks.map((l) => {
+            const isActive = active === l.href.slice(1);
+            return (
+              <li key={l.href} className="relative">
+                {isActive && (
+                  <motion.span
+                    layoutId="nav-pill"
+                    className="absolute inset-0 rounded-full bg-primary-container/70"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+                <a
+                  href={l.href}
+                  aria-current={isActive ? "true" : undefined}
+                  className={`relative px-3 py-1.5 text-sm font-medium rounded-full transition-colors ${
+                    isActive
+                      ? "text-primary"
+                      : "text-secondary hover:text-foreground hover:bg-surface-container"
+                  }`}
+                >
+                  {l.label}
+                </a>
+              </li>
+            );
+          })}
         </ul>
 
         {/* Trailing actions */}

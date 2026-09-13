@@ -13,7 +13,7 @@ export async function Projects() {
             Sistem yang saya kerjakan.
           </h2>
           <p className="mt-3 text-secondary font-body max-w-2xl">
-            Semuanya jalan di produksi atau tahap uji coba — bukan demo data.
+            Semuanya jalan di produksi atau tahap uji coba. Bukan demo data.
           </p>
         </FadeIn>
 

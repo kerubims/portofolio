@@ -2,47 +2,47 @@ import { FadeIn, StaggerContainer, StaggerItem } from "./motion/FadeIn";
 
 const timeline = [
   {
-    period: "2025 — 2026",
+    period: "2025 - 2026",
     title: "S1 Sistem Informasi",
     place: "STMIK PPKIA Pradnya Paramita, Malang",
     note: "IPK 3.69",
   },
   {
-    period: "2022 — 2025",
+    period: "2022 - 2025",
     title: "D3 Teknologi Informasi",
     place: "Universitas Brawijaya, Malang",
     note: "IPK 3.85",
   },
   {
-    period: "Okt 2024 — Mar 2025",
-    title: "Staff IT — BPS Kota Malang",
+    period: "Okt 2024 - Mar 2025",
+    title: "Staff IT BPS Kota Malang",
     place: "Magang / kerja",
-    note: "IT support kantor; membangun sistem manajemen magang untuk digitalisasi administrasi internal",
+    note: "IT support kantor, membangun sistem manajemen magang untuk digitalisasi administrasi internal",
   },
   {
-    period: "2019 — 2022",
+    period: "2019 - 2022",
     title: "SMK Rekayasa Perangkat Lunak",
     place: "SMK Negeri 8 Malang",
     note: "Nilai 87.21",
   },
   {
-    period: "Jul 2020 — Nov 2020",
-    title: "Digital Marketing — CV Indonesia Online",
+    period: "Jul 2020 - Nov 2020",
+    title: "Digital Marketing CV Indonesia Online",
     place: "Pertama kali kerja",
     note: "Facebook Ads + landing page WordPress untuk promosi produk UMKM",
   },
 ];
 
 const certs = [
-  { name: "Junior Web Developer", org: "BNSP / LSP Teknologi Digital", valid: "2025 — 2028" },
-  { name: "Microsoft Office Desktop Application", org: "Trust Training Partners & Microsoft", valid: "2024 — 2027" },
-  { name: "TOEFL ITP", org: "ETS / Universitas Brawijaya", valid: "2024 — 2026" },
+  { name: "Junior Web Developer", org: "BNSP / LSP Teknologi Digital", valid: "2025 - 2028" },
+  { name: "Microsoft Office Desktop Application", org: "Trust Training Partners & Microsoft", valid: "2024 - 2027" },
+  { name: "TOEFL ITP", org: "ETS / Universitas Brawijaya", valid: "2024 - 2026" },
 ];
 
 const training = [
-  "PCAP: Programming Essentials in Python — OpenEDG Python Institute / Cisco (2022)",
-  "Fundamental Frontend Engineer with Vue.js — Alterra Academy (2022)",
-  "Fundamental Mobile Developer with Flutter — Alterra Academy (2022)",
+  "PCAP: Programming Essentials in Python, OpenEDG Python Institute / Cisco (2022)",
+  "Fundamental Frontend Engineer with Vue.js, Alterra Academy (2022)",
+  "Fundamental Mobile Developer with Flutter, Alterra Academy (2022)",
 ];
 
 function IconDot() {
@@ -90,7 +90,7 @@ export function About() {
             Dari lab SMK sampai server produksi.
           </h2>
           <p className="mt-3 text-secondary font-body max-w-2xl">
-            Jurusan RPL sejak SMK, lanjut D3 Teknologi Informasi di Universitas Brawijaya, sekarang S1 Sistem Informasi di STMIK PPKIA. Pernah jadi Staff IT di BPS Kota Malang; sekarang fokus membangun sistem informasi — dari analisis kebutuhan sampai deployed dan jalan di produksi.
+            Jurusan RPL sejak SMK, lanjut D3 Teknologi Informasi di Universitas Brawijaya, sekarang S1 Sistem Informasi di STMIK PPKIA. Pernah jadi Staff IT di BPS Kota Malang. Sekarang fokus membangun sistem informasi, dari analisis kebutuhan sampai deployed dan jalan di produksi.
           </p>
         </FadeIn>
 
@@ -121,14 +121,14 @@ export function About() {
                     <span className="text-secondary mt-0.5"><IconPin /></span>
                     <div>
                       <div className="font-mono text-[11px] uppercase tracking-widest text-secondary">Basis</div>
-                      Malang, Jawa Timur — tersedia untuk kerja remote / hybrid
+                      Malang, Jawa Timur. Tersedia untuk kerja remote / hybrid
                     </div>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-secondary mt-0.5"><IconCap /></span>
                     <div>
                       <div className="font-mono text-[11px] uppercase tracking-widest text-secondary">Pendidikan terakhir</div>
-                      S1 Sistem Informasi, STMIK PPKIA (IPK 3.69) — sebelumnya D3 Teknologi Informasi UB (IPK 3.85)
+                      S1 Sistem Informasi, STMIK PPKIA (IPK 3.69). Sebelumnya D3 Teknologi Informasi UB (IPK 3.85)
                     </div>
                   </li>
                 </ul>
