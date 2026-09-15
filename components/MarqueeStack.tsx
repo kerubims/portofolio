@@ -350,9 +350,15 @@ function MarqueeItem({
         />
       </motion.div>
 
-      {/* Label reveal on hover */}
+      {/* Label reveal on hover.
+          Centering caveat (Tailwind v4): do NOT add -translate-x-1/2
+          as a class here. In v4 that utility writes the standalone
+          `translate` CSS property, which COMPOSES with the inline
+          `transform` below instead of overriding it. The label would
+          shift -50% twice and sit visibly left of the icon. The inline
+          transform already handles centering plus the reveal slide. */}
       <div
-        className="pointer-events-none absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap"
+        className="pointer-events-none absolute left-1/2 top-full mt-2 whitespace-nowrap"
         style={{
           opacity: hovered && !isDragging ? 1 : 0,
           transform: `translate(-50%, ${hovered && !isDragging ? 0 : 4}px)`,
