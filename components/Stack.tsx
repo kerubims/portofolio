@@ -11,7 +11,7 @@ export function Stack() {
             Stack &amp; Tools
           </h2>
           <p className="mt-3 text-secondary font-body max-w-2xl">
-            Saya pilih teknologi yang membosankan tapi terbukti jalan. Semua di bawah dipakai di project yang masih hidup sampai hari ini.
+            Bukan yang paling baru, tapi yang paling bisa diandalkan. Semua di bawah berjalan di production hari ini.
           </p>
         </FadeIn>
       </div>

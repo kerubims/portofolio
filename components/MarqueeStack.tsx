@@ -217,8 +217,15 @@ export function MarqueeStack() {
 
   return (
     <div
-      className="relative w-full overflow-hidden select-none"
+      className="relative w-full overflow-hidden select-none pb-12"
       style={{
+        // Edge fade, horizontal only. pb-12 on this wrapper reserves
+        // room INSIDE the clipping box for the hover tooltip that
+        // hangs below the 48px icons: the track box is only 96px tall
+        // (py-6 + icon), while the tooltip bottom reaches ~108px, so
+        // overflow-hidden used to slice the label. The padding extends
+        // the clip box itself; the mask gradient is unaffected because
+        // it is directionless along y.
         WebkitMaskImage:
           "linear-gradient(to right, transparent 0, black 8%, black 92%, transparent 100%)",
         maskImage:
