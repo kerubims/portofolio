@@ -21,6 +21,7 @@ export const projects: Project[] = [
       "Sistem informasi manajemen kerjasama lintas kementerian: rantai persetujuan, versioning dokumen, e-signature multi-pihak, audit trail.",
     techTags: ["Laravel 11", "MySQL", "WebSocket"],
     path: "C:\\laragon\\www\\sim-kerma",
+    liveUrl: "https://kerjasama.ksm.web.id",
   },
   {
     slug: "poltek-sendawar",
